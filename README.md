@@ -1,2 +1,2 @@
 # supercollider-examples
-collected examples of basic sound synthesis written in supercollider
+Collected examples of basic sound synthesis written in supercollider
