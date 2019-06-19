@@ -96,8 +96,9 @@ Spec.add(\outSignal, ControlSpec( 0.0, 6.0, \lin, 1, 6) );
 // playing using the GUI
 NdefMixer(s);
 
-Ndef(\benjolis).clear;
 Ndef(\benjolis).pause;
 Ndef(\benjolis).resume;
 Ndef(\benjolis).play;
+Ndef(\benjolis).clear;
+
 Ndef.clear
