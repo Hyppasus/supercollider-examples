@@ -78,6 +78,7 @@ Ndef(\benjolis,{arg freq1= 40, freq2=4, scale=1, rungler1=0.16, rungler2=0.0, ru
 
 );
 
+// add ranges for controlling with a GUI
 (
 Spec.add(\freq1, ControlSpec( 20.0, 14000.0, \exp, 0, 70, "Hz") );
 Spec.add(\freq2, ControlSpec( 0.1, 14000.0, \exp, 0, 4, "Hz") );
@@ -92,8 +93,9 @@ Spec.add(\loop, ControlSpec( 0.0, 1.0, \lin, 0, 1) );
 Spec.add(\scale, ControlSpec( 0.0, 1.0, \lin, 0, 1) );
 Spec.add(\outSignal, ControlSpec( 0.0, 6.0, \lin, 1, 6) );
 );
-
+// playing using the GUI
 NdefMixer(s);
+
 Ndef(\benjolis).clear;
 Ndef(\benjolis).pause;
 Ndef(\benjolis).resume;
