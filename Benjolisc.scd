@@ -1,3 +1,16 @@
+/*
+Instrument inspired from Rob Hordijk's Benjolin, it requires sc3-plugins (PulseDPW, SVF and DFM1)
+
+outSignal:
+1-triangle osc1,
+2-square osc1,
+3-triangle osc2,
+4-pulse osc2,
+5-XOR output,
+6-Filter output
+
+Enjoy! Alejandro Olarte
+*/
 (
 Ndef(\benjolis,{arg freq1= 40, freq2=4, scale=1, rungler1=0.16, rungler2=0.0, runglerFilt=9, loop=0, filtFreq=40, q=0.82, gain=1, filterType=0, outSignal=6, amp=1;
 	var osc1, osc2, tri1, tri2, sh0, sh1, sh2, sh3, sh4, sh5, sh6, sh7, sh8=1, rungler, pwm, filt, output;
@@ -15,9 +28,6 @@ Ndef(\benjolis,{arg freq1= 40, freq2=4, scale=1, rungler1=0.16, rungler2=0.0, ru
 	osc1 = PulseDPW.ar((rungler*rungler1)+freq1);
 	osc2 = PulseDPW.ar((rungler*rungler2)+freq2);
 
-	//osc1 = Pulse.ar((rungler*rungler1)+freq1);
-	//osc2 = Pulse.ar((rungler*rungler2)+freq2);
-
 	//pwm = tri1 > tri2;
 	pwm = BinaryOpUGen('>', (tri1 + tri2),(0));
 
@@ -34,8 +44,8 @@ Ndef(\benjolis,{arg freq1= 40, freq2=4, scale=1, rungler1=0.16, rungler2=0.0, ru
 	sh6 = DelayN.ar(Latch.ar(sh5,osc2),0.01,sr*6);
 	sh7 = DelayN.ar(Latch.ar(sh6,osc2),0.01,sr*7);
 	sh8 = DelayN.ar(Latch.ar(sh7,osc2),0.01,sr*8);
-	//(loop* -1 +1)
-	//rungler = ((sh6/8)+(sh7/4)+(sh8/2));
+
+	//rungler = ((sh6/8)+(sh7/4)+(sh8/2)); //original circuit
 	//rungler = ((sh5/16)+(sh6/8)+(sh7/4)+(sh8/2));
 
 	rungler = ((sh1/2.pow(8))+(sh2/2.pow(7))+(sh3/2.pow(6))+(sh4/2.pow(5))+(sh5/2.pow(4))+(sh6/2.pow(3))+(sh7/2.pow(2))+(sh8/2.pow(1)));
@@ -56,7 +66,6 @@ Ndef(\benjolis,{arg freq1= 40, freq2=4, scale=1, rungler1=0.16, rungler2=0.0, ru
 		DFM1.ar(pwm,(rungler*runglerFilt)+filtFreq,q,gain,1)
 	]);
 
-	//filt = SVF.ar(pwm, (rungler*runglerFilt)+filtFreq,q,filterType* -1+1,0,filterType);
 
 	output = Select.ar(outSignal, [
 		tri1, osc1, tri2, osc2, pwm, sh0, filt
