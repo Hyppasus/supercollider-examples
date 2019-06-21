@@ -12,7 +12,7 @@ outSignal:
 Enjoy! Alejandro Olarte
 */
 (
-Ndef(\benjolis,{arg freq1= 40, freq2=4, scale=1, rungler1=0.16, rungler2=0.0, runglerFilt=9, loop=0, filtFreq=40, q=0.82, gain=1, filterType=0, outSignal=6, amp=1;
+Ndef(\benjolis,{ |freq1= 40, freq2=4, scale=1, rungler1=0.16, rungler2=0.0, runglerFilt=9, loop=0, filtFreq=40, q=0.82, gain=1, filterType=0, outSignal=6, amp=1|
 	var osc1, osc2, tri1, tri2, sh0, sh1, sh2, sh3, sh4, sh5, sh6, sh7, sh8=1, rungler, pwm, filt, output;
 	var sr;
 	var osc2freq, buf, bufR;
@@ -101,4 +101,4 @@ Ndef(\benjolis).resume;
 Ndef(\benjolis).play;
 Ndef(\benjolis).clear;
 
-Ndef.clear
+Ndef.clear;
