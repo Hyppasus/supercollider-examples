@@ -1,5 +1,5 @@
 /*
-Complex dual oscillator modulating each other in frequency, phase and amplitude. The output can be either each oscillator separetely or a folded or wraped version of oscillator one.
+Complex dual oscillator modulating each other in frequency, phase and amplitude. The output can be either each oscillator separately or a folded or a wrapped version of oscillator one.
 Enjoy it!
 Alejandro Olarte
 */
@@ -7,14 +7,14 @@ Alejandro Olarte
 
 (
 Ndef(\complexosc, {
-	var osc1=1, osc2=1, fbk, outlet, folded, wraped;
+	var osc1=1, osc2=1, fbk, outlet, folded, wrapped;
 	fbk = LocalIn.ar(2,0);
 	osc1 = SinOsc.ar(\freq1.ar(40)+(fbk[1].range(1,1000)*\fm1.ar(0.1)), 0+(fbk[1].range(-pi,pi)*\pm1.ar(0)), \mul1.ar(1)+(fbk[1]*\ring1.ar(1)), \add1.ar(0));
 	osc2 = SinOsc.ar(\freq2.ar(0.5)+(fbk[0].range(1,1000)*\fm2.ar(0.1)), 0+(fbk[1].range(-pi,pi)*\pm2.ar(0)), \mul2.ar(1)+(fbk[0]*\ring2.ar(1)), \add2.ar(0));
 	LocalOut.ar([osc1, osc2]);
 	folded = Fold.ar(osc1!2,\fold.ar(0.8).neg,\fold.ar(0.8));
-	wraped = Wrap.ar(osc1!2,\wrap.ar(0.9).neg,\wrap.ar(0.9));
-	outlet = LeakDC.ar(Select.ar(\switch.kr(2), [osc1!2, osc2!2, folded, wraped]));
+	wrapped = Wrap.ar(osc1!2,\wrap.ar(0.9).neg,\wrap.ar(0.9));
+	outlet = LeakDC.ar(Select.ar(\switch.kr(2), [osc1!2, osc2!2, folded, wrapped]));
 }
 ).play
 
