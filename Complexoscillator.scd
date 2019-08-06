@@ -1,8 +1,9 @@
 /*
-Complex dual oscillator
+Complex dual oscillator modulating each other in frequency, phase and amplitude. The output can be either each oscillator separetely or a folded or wraped version of oscillator one.
 Enjoy it!
 Alejandro Olarte
 */
+/*##############################################################################################################*/
 
 (
 Ndef(\complexosc, {
@@ -11,32 +12,30 @@ Ndef(\complexosc, {
 	osc1 = SinOsc.ar(\freq1.ar(40)+(fbk[1].range(1,1000)*\fm1.ar(0.1)), 0+(fbk[1].range(-pi,pi)*\pm1.ar(0)), \mul1.ar(1)+(fbk[1]*\ring1.ar(1)), \add1.ar(0));
 	osc2 = SinOsc.ar(\freq2.ar(0.5)+(fbk[0].range(1,1000)*\fm2.ar(0.1)), 0+(fbk[1].range(-pi,pi)*\pm2.ar(0)), \mul2.ar(1)+(fbk[0]*\ring2.ar(1)), \add2.ar(0));
 	LocalOut.ar([osc1, osc2]);
-
 	folded = Fold.ar(osc1!2,\fold.ar(0.8).neg,\fold.ar(0.8));
 	wraped = Wrap.ar(osc1!2,\wrap.ar(0.9).neg,\wrap.ar(0.9));
-	outlet = Select.ar(\output.kr(0), [osc1!2, osc2!2, folded, wraped])
+	outlet = LeakDC.ar(Select.ar(\switch.kr(2), [osc1!2, osc2!2, folded, wraped]));
 }
 ).play
 
 );
 
 (
-Spec.add(\freq1, ControlSpec( 0.1, 18000.0, \exp, 0, 70, "Hz") );//Frequency control for first oscillator
-Spec.add(\freq2, ControlSpec( 0.1, 18000.0, \exp, 0, 4, "Hz") );//Frequency control for second oscillator
-Spec.add(\pm1, ControlSpec( 0.0, pi, \lin, 0, 0, "rad") );//Amount of Phase modulation for first oscillator
-Spec.add(\pm2, ControlSpec( 0.0, pi, \lin, 0, 0, "rad") );//Amount of Phase modulation for second oscillator
-Spec.add(\mul1, ControlSpec( 0.0, 1, \lin, 0, 0, "mul") );//Amplitude control of first oscillator
-Spec.add(\mul2, ControlSpec( 0.0, 1, \lin, 0, 0, "mul") );//Amplitude control of second oscillator
-Spec.add(\add1, ControlSpec( 0.0, 1, \lin, 0, 0, "mul") );//DC offset for first oscillator
-Spec.add(\add2, ControlSpec( 0.0, 1, \lin, 0, 0, "mul") );//DC offset for second oscillator
-Spec.add(\fm1, ControlSpec( 0.0, 1, \lin, 0, 0, "mul") );//Amount of Frequency modulation for first oscillator
-Spec.add(\fm2, ControlSpec( 0.0, 1, \lin, 0, 0, "mul") );//Amount of Frequency modulation for second oscillator
-Spec.add(\ring1, ControlSpec( 0.0, 1, \lin, 0, 0, "mul") );//Amount of Ring modulation for first oscillator
-Spec.add(\ring2, ControlSpec( 0.0, 1, \lin, 0, 0, "mul") );//Amount of Ring modulation for second oscillator
-Spec.add(\output, ControlSpec( 0, 3, \lin, 1, 2, "mul") );//Four positions switch: osc1, osc2, Folded, Wraped
-Spec.add(\fold, ControlSpec( -1, 1, \lin, 0, 0, "mul") );//Fold thresholds
-Spec.add(\wrap, ControlSpec( -1, 1, \lin, 0, 0, "mul") );//Wrap thresholds
-
+Spec.add(\freq1, ControlSpec(0.1, 18000.0, \exp, 0, 70, "Hz"));//Frequency control for first oscillator
+Spec.add(\freq2, ControlSpec(0.1, 18000.0, \exp, 0, 4, "Hz"));//Frequency control for second oscillator
+Spec.add(\pm1, ControlSpec(0.0, pi, \lin, 0, 0, "rad"));//Amount of Phase modulation for first oscillator
+Spec.add(\pm2, ControlSpec(0.0, pi, \lin, 0, 0, "rad"));//Amount of Phase modulation for second oscillator
+Spec.add(\mul1, ControlSpec(0.0, 1, \lin, 0, 0));//Amplitude control of first oscillator
+Spec.add(\mul2, ControlSpec(0.0, 1, \lin, 0, 0));//Amplitude control of second oscillator
+Spec.add(\add1, ControlSpec(0.0, 1, \lin, 0, 0));//DC offset for first oscillator
+Spec.add(\add2, ControlSpec(0.0, 1, \lin, 0, 0));//DC offset for second oscillator
+Spec.add(\fm1, ControlSpec(0.0, 1, \lin, 0, 0));//Amount of Frequency modulation for first oscillator
+Spec.add(\fm2, ControlSpec(0.0, 1, \lin, 0, 0));//Amount of Frequency modulation for second oscillator
+Spec.add(\ring1, ControlSpec(0.0, 1, \lin, 0, 0));//Amount of Ring modulation for first oscillator
+Spec.add(\ring2, ControlSpec(0.0, 1, \lin, 0, 0));//Amount of Ring modulation for second oscillator
+Spec.add(\switch, ControlSpec(0, 3, \lin, 1, 2));//Four positions switch: osc1, osc2, Folded, Wraped
+Spec.add(\fold, ControlSpec(0, 1, \lin, 0, 0));//Fold thresholds
+Spec.add(\wrap, ControlSpec(0, 1, \lin, 0, 0));//Wrap thresholds
 );
 
 //Sequence the frequency of both oscillators and explore the controls with the GUI
@@ -52,9 +51,6 @@ Pdef(\complexoscKr, Pbind(
 Ndef(\complexosc).gui;
 );
 
-/*##############################################################################################################*/
-//Ndef interface
-
 NdefMixer(s);
 Ndef(\complexosc).clear;
 Ndef(\complexosc).pause;
@@ -65,15 +61,11 @@ Pdef(\complexoscKr).resume;
 Pdef.clear;
 Ndef.clear;
 
-
-
 /*##############################################################################################################*/
 //Alternative sequencing
 (
 Ndef(\stepseq, {
-	var a, b, t = Impulse.ar(2);
-	a = { Dseq([1, 2, 3, 4, 5], inf) } * 100;
-	Demand.ar(t, 0, a);
+	Demand.ar(Impulse.ar(4), 0, { Dseq([1, 2, 3, 4, 5], inf) } * 100);
 }
 )
 );
@@ -89,8 +81,8 @@ MIDIFunc.trace(bool: true);
 MIDIFunc.trace(bool: false);
 
 (
-MIDIdef.noteOn(\notes1, { |vel,val|Ndef(\complexosc).set(\freq1, \freq.asSpec.map(val / 127))},chan:0);
-MIDIdef.noteOn(\notes2, { |vel,val|Ndef(\complexosc).set(\freq2, \freq.asSpec.map(val / 127))},chan:1);
+MIDIdef.noteOn(\notes1, { |vel,val|Ndef(\complexosc).set(\freq1, \freq.asSpec.map(val/127))},chan:0);
+MIDIdef.noteOn(\notes2, { |vel,val|Ndef(\complexosc).set(\freq2, \freq.asSpec.map(val/127))},chan:1);
 Spec.add(\freq, [10, 10000, \exp]);
 );
 (
@@ -115,7 +107,6 @@ MIDIdef.freeAll;
 (
 Pdef(\complexoscKr, Pbind(
 	\type, \set,
-
 	\args, [\freq1, \freq2, \fm1, \fm2, \ring1, \ring2, \mul1, \mul2, \add1, \add2, \fold, \wrap],
 	\id, Pfunc({ Ndef(\complexosc).group.nodeID }),
 	\freq1, Pxrand(([1,4,6,5,8,2,3,1]+24).midicps,inf),
