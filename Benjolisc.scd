@@ -71,7 +71,7 @@ Ndef(\benjolis,{ |freq1= 40, freq2=4, scale=1, rungler1=0.16, rungler2=0.0, rung
 		tri1, osc1, tri2, osc2, pwm, sh0, filt
 
 	]);
-	output * amp ! 2
+	LeakDC.ar(output * amp ! 2);
 
 }
 ).play
@@ -95,10 +95,9 @@ Spec.add(\outSignal, ControlSpec( 0.0, 6.0, \lin, 1, 6) );
 );
 // playing using the GUI
 NdefMixer(s);
-
+Ndef(\benjolis).gui;
 Ndef(\benjolis).pause;
 Ndef(\benjolis).resume;
 Ndef(\benjolis).play;
 Ndef(\benjolis).clear;
-
 Ndef.clear;
