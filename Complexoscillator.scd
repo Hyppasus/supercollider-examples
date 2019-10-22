@@ -86,19 +86,19 @@ MIDIdef.noteOn(\notes2, { |vel,val|Ndef(\complexosc).set(\freq2, \freq.asSpec.ma
 Spec.add(\freq, [10, 10000, \exp]);
 );
 (
-MIDIdef.cc(\knob1, { |val|Ndef(\complexosc).set(\fm1, val/127);}, ccNum: 10);
-MIDIdef.cc(\knob2, { |val|Ndef(\complexosc).set(\fm2, val/127);}, ccNum: 11);
-MIDIdef.cc(\knob3, { |val|Ndef(\complexosc).set(\ring1, val/127);}, ccNum: 12);
-MIDIdef.cc(\knob4, { |val|Ndef(\complexosc).set(\ring2, val/127);}, ccNum: 13);
-MIDIdef.cc(\knob5, { |val|Ndef(\complexosc).set(\pm1, val/127);}, ccNum: 14);
-MIDIdef.cc(\knob6, { |val|Ndef(\complexosc).set(\pm2, val/127);}, ccNum: 15);
-MIDIdef.cc(\knob7, { |val|Ndef(\complexosc).set(\mul1, val/127);}, ccNum: 16);
-MIDIdef.cc(\knob8, { |val|Ndef(\complexosc).set(\mul2, val/127);}, ccNum: 17);
-MIDIdef.cc(\knob9, { |val|Ndef(\complexosc).set(\add1, val/127);}, ccNum: 18);
-MIDIdef.cc(\knob10, { |val|Ndef(\complexosc).set(\add2, val/127);}, ccNum: 19);
-MIDIdef.cc(\knob11, { |val|Ndef(\complexosc).set(\fold, val/127);}, ccNum: 20);
-MIDIdef.cc(\knob12, { |val|Ndef(\complexosc).set(\wrap, val/127);}, ccNum: 21);
-MIDIdef.cc(\knob13, { |val|Ndef(\complexosc).set(\switch, val.linlin(0,127,0,3));}, ccNum: 21);
+		MIDIdef.cc(\knob1, { |val|Ndef(\complexosc).set(\fm1, val.linexp(0,127,0.01,10000));}, ccNum: 0);
+		MIDIdef.cc(\knob2, { |val|Ndef(\complexosc).set(\fm2, val.linexp(0,127,0.01,10000));}, ccNum: 1);
+		MIDIdef.cc(\knob3, { |val|Ndef(\complexosc).set(\ring1, val/127);}, ccNum: 2);
+		MIDIdef.cc(\knob4, { |val|Ndef(\complexosc).set(\ring2, val/127);}, ccNum: 3);
+		MIDIdef.cc(\knob5, { |val|Ndef(\complexosc).set(\pm1, val/127);}, ccNum: 4);
+		MIDIdef.cc(\knob6, { |val|Ndef(\complexosc).set(\pm2, val/127);}, ccNum: 5);
+		MIDIdef.cc(\knob7, { |val|Ndef(\complexosc).set(\mul1, val/127);}, ccNum: 6);
+		MIDIdef.cc(\knob8, { |val|Ndef(\complexosc).set(\mul2, val/127);}, ccNum: 7);
+		MIDIdef.cc(\knob9, { |val|Ndef(\complexosc).set(\add1, val/127);}, ccNum: 16);
+		MIDIdef.cc(\knob10, { |val|Ndef(\complexosc).set(\add2, val/127);}, ccNum: 17);
+		MIDIdef.cc(\knob11, { |val|Ndef(\complexosc).set(\fold, val/127);}, ccNum: 18);
+		MIDIdef.cc(\knob12, { |val|Ndef(\complexosc).set(\wrap, val/127);}, ccNum: 19);
+		MIDIdef.cc(\knob13, { |val|Ndef(\complexosc).set(\switch, val.linlin(0,127,0,3));}, ccNum: 20);
 );
 
 MIDIdef.freeAll;
