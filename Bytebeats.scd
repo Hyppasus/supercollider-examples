@@ -7,6 +7,7 @@
 */
 
 //Bytebeats in sc
+//Carefull with the volume. It can get very loud!
 
 (
 Server.default.waitForBoot{
