@@ -13,7 +13,7 @@ Ndef(\xen,{
 	env = EnvGen.ar(
 				Env(
 					levels,
-					//durations.normalizeSum, //to experiment
+					//durations.normalizeSum, //to experiment!
 					durations,
 					curves
 		),
