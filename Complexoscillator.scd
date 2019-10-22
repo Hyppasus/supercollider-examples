@@ -21,8 +21,8 @@ Ndef(\complexosc, {
 );
 
 (
-Spec.add(\freq1, ControlSpec(0.1, 18000.0, \exp, 0, 70, "Hz"));//Frequency control for first oscillator
-Spec.add(\freq2, ControlSpec(0.1, 18000.0, \exp, 0, 4, "Hz"));//Frequency control for second oscillator
+Spec.add(\freq1, ControlSpec(0.05, 18000.0, \exp, 0, 70, "Hz"));//Frequency control for first oscillator
+Spec.add(\freq2, ControlSpec(0.05, 18000.0, \exp, 0, 4, "Hz"));//Frequency control for second oscillator
 Spec.add(\pm1, ControlSpec(0.0, pi, \lin, 0, 0, "rad"));//Amount of Phase modulation for first oscillator
 Spec.add(\pm2, ControlSpec(0.0, pi, \lin, 0, 0, "rad"));//Amount of Phase modulation for second oscillator
 Spec.add(\mul1, ControlSpec(0.0, 1, \lin, 0, 0));//Amplitude control of first oscillator
@@ -98,7 +98,7 @@ MIDIdef.cc(\knob9, { |val|Ndef(\complexosc).set(\add1, val/127);}, ccNum: 18);
 MIDIdef.cc(\knob10, { |val|Ndef(\complexosc).set(\add2, val/127);}, ccNum: 19);
 MIDIdef.cc(\knob11, { |val|Ndef(\complexosc).set(\fold, val/127);}, ccNum: 20);
 MIDIdef.cc(\knob12, { |val|Ndef(\complexosc).set(\wrap, val/127);}, ccNum: 21);
-MIDIdef.cc(\knob13, { |val|Ndef(\complexosc).set(\output, val.linlin(0,127,0,3));}, ccNum: 21);
+MIDIdef.cc(\knob13, { |val|Ndef(\complexosc).set(\switch, val.linlin(0,127,0,3));}, ccNum: 21);
 );
 
 MIDIdef.freeAll;
