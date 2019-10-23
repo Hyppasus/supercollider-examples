@@ -20,7 +20,7 @@ Ndef(\xen,{
 	trig,
 	timeScale:freq.reciprocal,
 	);
-	sound = env;
+	sound = LeakDC.ar(env);
 	sound = LPF.ar(sound, ffreqLPF);
 	sound = HPF.ar(sound, ffreqHPF);
 	sound = Select.ar(sel,[sound,SinOsc.ar(sound.range(minFreq,maxFreq))]);
@@ -47,7 +47,7 @@ Ndef(\xen,{
 	trig,
 	timeScale:freq.reciprocal,
 	);
-	sound = env;
+	sound = LeakDC.ar(env);
 	sound = LPF.ar(sound, ffreqLPF);
 	sound = HPF.ar(sound, ffreqHPF);
 	sound = Select.ar(sel,[sound,SinOsc.ar(sound.range(minFreq,maxFreq))]);
